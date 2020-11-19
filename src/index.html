@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>image-finder</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Что вы хотите найти?</h1>
+    <form class="search-form" id="search-form">
+      <input
+        type="text"
+        name="query"
+        autocomplete="off"
+        placeholder="Ищим картинки..."
+      />
+    </form>
+    <ul class="gallery"></ul>
+    <button
+      type="button"
+      class="btn btn-primary button"
+      data-action="load-more"
+    >
+      <span class="label">Показать ещё</span>
+
+      <template>
+        <div class="modal">
+          <!-- <p>I'm a modal created from a DOM element/node.</p> -->
+        </div>
+      </template>
+    </button>
+  </body>
+</html>

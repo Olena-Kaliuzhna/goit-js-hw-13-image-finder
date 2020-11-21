@@ -12,15 +12,14 @@ export default class Images {
     this.page = 1;
   }
 
-  fetchImages() {
+  async fetchImages() {
     const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&per_page=12&page=${this.page}`;
 
-    return fetch(url)
-      .then(response => response.json())
-      .then(({ hits  }) => {
-        this.incrementPage();
-        return hits ;
-      });
+    const response = await fetch(url);
+    const newImages = await response.json();
+    this.incrementPage();
+    
+    return newImages.hits;
   }
 
   incrementPage() {

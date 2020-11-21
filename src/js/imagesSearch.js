@@ -19,36 +19,43 @@ refs.upButton.addEventListener('click', ScrollUp);
 function onSearch(e) {
   e.preventDefault();
 
-  imagesEl.query = e.currentTarget.elements.query.value;
+  try {
+    imagesEl.query = e.currentTarget.elements.query.value;
 
-  if (imagesEl.query === '') {
-      return error({
-      text: 'введите в поле поиска значение!',
-      delay: 2500,
-      closerHover: true,
-    });
+    if (imagesEl.query === '') {
+        return error({
+        text: 'введите в поле поиска значение!',
+        delay: 2500,
+        closerHover: true,
+      });
+    }
+    
+    imagesEl.resetPage();
+    clearmarkupImages();
+    fetchImages();
+  } catch (error) {
+    console.log('Ошибка');
   }
- 
-  imagesEl.resetPage();
-  clearmarkupImages();
-  fetchImages();
 }
 
-function fetchImages() {
+async function fetchImages() {
       
-  imagesEl.fetchImages().then(images => {
+  try {
+    const images = await imagesEl.fetchImages();
     markupImages(images);
-    imagesEl.incrementPage();
-      
-      if (images.length === 0) {
-      
-        error({
-            text: 'не найдено',
-            delay: 2500,
-            closerHover: true,
-      });
-        }
-  });
+        
+    if (images.length === 0) {
+    
+      error({
+          text: 'не найдено',
+          delay: 2500,
+          closerHover: true,
+    });
+    }
+  } catch (error) {
+    console.log('Ошибка');
+  }
+ 
 }
 
 
@@ -65,7 +72,6 @@ function onOpenModal(e) {
   basicLightbox.create(largeImageURL).show();
 }
 
-
 const onEntry = entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting && imagesEl.query !== '') {
@@ -75,7 +81,7 @@ const onEntry = entries => {
 };
 
 const observer = new IntersectionObserver(onEntry, {
-  rootMargin: '250px',
+  rootMargin: '200px',
 });
 observer.observe(refs.forObserveEl);
 

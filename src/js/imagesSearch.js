@@ -8,20 +8,13 @@ import 'basiclightbox/dist/basicLightbox.min.css';
 
 import refs from "./getRefs";
 import Images from './fetchImages';
-import LoadMoreBtn from './loadMoreBtn';
 import markupImages from "./markup";
 
-
-
 const imagesEl = new Images();
-const loadMoreBtn = new LoadMoreBtn({
-  selector: '[data-action="load-more"]',
-  hidden: true,
-});
 
 refs.searchForm.addEventListener('submit', onSearch);
-loadMoreBtn.refs.button.addEventListener('click', onLoadMore);
 refs.imagesContainer.addEventListener('click', onOpenModal);
+refs.upButton.addEventListener('click', ScrollUp);
 
 function onSearch(e) {
   e.preventDefault();
@@ -35,27 +28,26 @@ function onSearch(e) {
       closerHover: true,
     });
   }
-
-  loadMoreBtn.show();
+ 
   imagesEl.resetPage();
   clearmarkupImages();
   fetchImages();
 }
 
 function fetchImages() {
-    loadMoreBtn.disable();
-    
-  return imagesEl.fetchImages().then(images => {
+      
+  imagesEl.fetchImages().then(images => {
     markupImages(images);
-      loadMoreBtn.enable();
+    imagesEl.incrementPage();
+      
       if (images.length === 0) {
-      loadMoreBtn.hide();
-      error({
-        text: 'не найдено',
-        delay: 2500,
-        closerHover: true,
+      
+        error({
+            text: 'не найдено',
+            delay: 2500,
+            closerHover: true,
       });
-    }
+        }
   });
 }
 
@@ -73,24 +65,33 @@ function onOpenModal(e) {
   basicLightbox.create(largeImageURL).show();
 }
 
-function onLoadMore() {
-  fetchImages()
-    .then(
-        setTimeout(() => {
-          
-        window.scrollTo({
-            // top: document.documentElement.offsetHeight - 300,
-            top: document.documentElement.clientHeight,
-            
-            
-            
-            behavior: 'smooth',
-        });
-            
-        
-      }, 1000),
-       
-        
-    )
-    .catch(err => console.log(err));
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && imagesEl.query !== '') {
+      fetchImages();
+    }
+  });
+};
+
+const observer = new IntersectionObserver(onEntry, {
+  rootMargin: '250px',
+});
+observer.observe(refs.forObserveEl);
+
+
+function ScrollUp () {
+        if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+            window.scrollBy(0,-50);
+            setTimeout(ScrollUp, 10);
+        }
+    }
+    
+window.onscroll = function() {
+  const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+  if (scrolled > 0) {
+    refs.upButton.classList.remove('is-hidden')
+  } else {
+    refs.upButton.classList.add('is-hidden')
+  }
 }

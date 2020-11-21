@@ -1,7 +1,8 @@
 const refs = {
   searchForm: document.querySelector('#search-form'),
-  searchButton: document.querySelector('.js-submit'),
+  upButton: document.querySelector('.button'),
   imagesContainer: document.querySelector('.gallery'),
+  forObserveEl: document.querySelector('.for-observe')
 
 };
 

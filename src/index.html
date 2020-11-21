@@ -13,6 +13,7 @@
     <h1>Что вы хотите найти?</h1>
     <form class="search-form" id="search-form">
       <input
+        class="search-input"
         type="text"
         name="query"
         autocomplete="off"
@@ -20,18 +21,12 @@
       />
     </form>
     <ul class="gallery"></ul>
-    <button
-      type="button"
-      class="btn btn-primary button"
-      data-action="load-more"
-    >
-      <span class="label">Показать ещё</span>
-
-      <template>
-        <div class="modal">
-          <!-- <p>I'm a modal created from a DOM element/node.</p> -->
-        </div>
-      </template>
-    </button>
+    <div class="for-observe"></div>
+    <button id="upbutton" type="button" class="button is-hidden"></button>
+    <template>
+      <div class="modal">
+        <!-- <p>I'm a modal created from a DOM element/node.</p> -->
+      </div>
+    </template>
   </body>
 </html>

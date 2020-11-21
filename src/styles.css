@@ -49,6 +49,7 @@ p {
   font-size: 25px;
   border-radius: 5px;
   text-align: center;
+  box-shadow: 1px 5px 5px rgb(77, 28, 73);
 }
 
 .button {
